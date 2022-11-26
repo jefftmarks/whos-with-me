@@ -30,11 +30,7 @@ const EventSchema = new mongoose.Schema({
 	},
 	date: {
 		type: Date,
-		required: [true, 'Please provide a date for your event']
-	},
-	time: {
-		type: String,
-		required: [true, 'Please provide a time for your event'],
+		required: [true, 'Please provide a date and time for your event']
 	},
 	location: LocationSchema,
 	created_by: {

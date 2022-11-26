@@ -12,7 +12,7 @@ const createEvent = async (req, res) => {
 };
 
 const getAllEvents = async (req, res) => {
-	const { name, date, host } = req.query;
+	const { name, date, host, sort } = req.query;
 	const queryObject = {};
 
 	if (name) {
@@ -36,7 +36,11 @@ const getAllEvents = async (req, res) => {
 		queryObject.created_by = { $in: users} 
 	}
 
-	const events = await Event.find(queryObject);
+	const events = await Event.find(queryObject).sort("date");
+
+	events.forEach(event => {
+		event._doc.isAttending = event.attendees.includes(req.user.userId);
+	});
 
 	res.status(StatusCodes.OK).json(events);
 }
@@ -64,25 +68,60 @@ const rsvp = async (req, res) => {
 
 	event.attendees.addToSet(req.user.userId);
 	event.save();
-	res.status(StatusCodes.OK).json(event);
+	event._doc.isAttending = true;
+	res.status(StatusCodes.OK).json({ event: event, user: req.user });
+};
+
+const cancelRSVP = async (req, res) => {
+	await Event.updateOne(
+		{ _id: req.params.event_id },
+		{ $pull: { attendees: req.user.userId } }
+	);
+
+	const event = await Event.findById(req.params.event_id);
+
+	if (!event) {
+    throw new NotFoundError(`No event with id ${req.params.event_id}`);
+  }
+
+	res.status(StatusCodes.OK).json({ event: event, user: req.user });
+};
+
+const deleteEvent = async (req, res) => {
+	const event = await Event.findByIdAndDelete(req.params.id);
+
+	if (!event) {
+    throw new NotFoundError(`No event with id ${req.params.id}`);
+  }
+
+	res.status(StatusCodes.OK).send(req.user);
 };
 
 const getMyEventsHosting = async (req, res) => {
-	const events = await Event.find({ created_by: req.user.userId});
+	const events = await Event
+		.find({ created_by: req.user.userId})
+		.sort("date")
 	
 	if (!events) {
     throw new NotFoundError(`No events created by user with id ${req.user.userId}`);
   }
 
+	events.forEach(event => event._doc.isHosting = true);
+
 	res.status(StatusCodes.OK).json(events);
 }
 
 const getMyEventsAttending = async (req, res) => {
-	const events = await Event.find({ attendees: req.user.userId});
+	const events = await Event.find({
+		attendees: req.user.userId,
+		created_by: { $ne: req.user.userId }
+	}).sort("date");
 
 	if (!events) {
     throw new NotFoundError(`No RSVPs for user with id ${req.user.userId}`);
   }
+
+	events.forEach(event => event._doc.isAttending = true);
 
 	res.status(StatusCodes.OK).json(events);
 };
@@ -92,6 +131,8 @@ module.exports = {
 	getAllEvents,
 	getEvent,
 	rsvp,
+	cancelRSVP,
+	deleteEvent,
 	getMyEventsAttending,
 	getMyEventsHosting,
 };

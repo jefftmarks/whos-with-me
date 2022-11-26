@@ -3,3 +3,30 @@
   margin: 0;
   box-sizing: border-box;
 }
+
+.home {
+	padding: 0.5em;
+	display: flex;
+	flex-direction: column;
+	row-gap: 1em;
+}
+
+.home .header {
+	border: 1px solid black;
+	padding: 0.5em;
+}
+
+.my-events {
+	border: 1px solid black;
+	padding: 0.5em;
+}
+
+.all-events {
+	border: 1px solid black;
+	padding: 0.5em;
+}
+
+.event-card {
+	border: 1px solid black;
+	padding: 0.5em;
+}

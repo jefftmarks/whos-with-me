@@ -40,6 +40,7 @@ const getAllEvents = async (req, res) => {
 
 	events.forEach(event => {
 		event._doc.isAttending = event.attendees.includes(req.user.userId);
+		event._doc.isHosting = (event.created_by.toString() === req.user.userId);
 	});
 
 	res.status(StatusCodes.OK).json(events);

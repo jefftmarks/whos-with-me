@@ -1,4 +1,5 @@
 import React, { useContext } from "react";
+import { Link } from "react-router-dom";
 import { ActiveUserContext } from "./context/active_user";
 import MyEvents from "./MyEvents";
 import AllEvents from "./AllEvents";
@@ -20,6 +21,7 @@ function Home() {
 			</div>
 			<MyEvents />
 			<AllEvents />
+			<Link to="/event/new"><button>Create Event</button></Link>
 		</div>
 		
 	);

@@ -80,7 +80,7 @@ function EventCard({ event, section}) {
 			case "all-events":
 				return (
 					event.isAttending ? (
-						<em>attending</em>
+						<em>{event.isHosting ? "hosting" : "attending"}</em>
 					) : (
 						<button onClick={handleRSVP}>RSVP</button>
 					)

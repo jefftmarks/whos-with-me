@@ -3,6 +3,7 @@ import { ActiveUserContext } from "./context/active_user";
 import { Routes, Route } from "react-router-dom";
 import Home from "./Home";
 import Login from "./Login";
+import EventForm from "./EventForm";
 
 function App() {
 	const [activeUser, setActiveUser] = useContext(ActiveUserContext);
@@ -35,6 +36,7 @@ function App() {
     <div className="App">
       <Routes>
 				<Route path="/" element={activeUser ? <Home /> : <Login />} />
+				<Route path="/event/new" element={<EventForm />} />
 			</Routes>
     </div>
   );

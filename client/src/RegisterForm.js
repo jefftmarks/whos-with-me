@@ -1,5 +1,6 @@
 import React, { useState, useContext } from "react";
 import { ActiveUserContext } from "./context/active_user";
+import "./login.css";
 
 const initialState = { first_name: "", last_name: "", email: "", username: "", password: "" };
 
@@ -38,7 +39,7 @@ function RegisterForm() {
 
 
 	return (
-		<div className="register-form">
+		<>
 			<form onSubmit={handleSubmit}>
 				<input
 					type="text"
@@ -83,7 +84,7 @@ function RegisterForm() {
 				<button>Register</button>
 			</form>
 			{error ? <p>{error}</p> : null}
-		</div>
+		</>
 	);
 }
 

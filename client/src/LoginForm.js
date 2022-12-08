@@ -1,5 +1,6 @@
 import React, { useState, useContext } from "react";
 import { ActiveUserContext } from "./context/active_user";
+import "./login.css";
 
 const initialState = { username: "", password: "" };
 
@@ -38,7 +39,7 @@ function LoginForm() {
 
 
 	return (
-		<div className="login-form">
+		<>
 			<form onSubmit={handleSubmit}>
 				<input
 					type="text"
@@ -59,7 +60,7 @@ function LoginForm() {
 				<button>Sign In</button>
 			</form>
 			{error ? <p>{error}</p> : null}
-		</div>
+		</>
 	);
 }
 

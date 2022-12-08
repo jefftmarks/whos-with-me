@@ -1,0 +1,26 @@
+.login {
+	display: grid;
+	grid-template-columns: 250px auto;
+	grid-template-rows: 100px auto;
+	height: 100vh;
+}
+
+.login .grid-item-1 {
+	border: 1px solid green;
+	grid-column-start: 1;
+	grid-column-end: 2;
+	grid-row-start: 1;
+	grid-row-end: 3;
+}
+
+.login .grid-item-2 {
+	border: 1px solid red;
+	grid-column-start: 2;
+	grid-column-end: 3;
+}
+
+.login .grid-item-3 {
+	border: 1px solid blue;
+	grid-column-start: 2;
+	grid-column-end: 3;
+}
